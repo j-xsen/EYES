@@ -54,6 +54,6 @@ class Part(OnscreenImage):
             elif type(_color) == Color:
                 self.setColor(_color)
             else:
-                raise Exception("Wrong _color type: " + str(type(_color)))
+                raise Exception("Part | Wrong _color type: " + str(type(_color)))
         else:
-            raise Exception("No node to tint!")
+            raise Exception("Part | No node to tint!")

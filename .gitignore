@@ -3,8 +3,5 @@ venv/*
 .idea/*
 __pycace__/*
 render/*
-Sunny Day/*
-Love Heart/*
-Desert/*
-Stormy/*
+screenshots/*
 img/*

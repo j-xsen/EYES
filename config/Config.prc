@@ -14,4 +14,6 @@ max-hpr-x 300
 min-hpr-y -25
 max-hpr-y 25
 rotate-time 2
+number_eye_variants 4
+support-threads #f
 compressed-textures 1

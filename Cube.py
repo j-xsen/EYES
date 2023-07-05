@@ -4,8 +4,10 @@ from panda3d.core import GeomNode
 from panda3d.core import LVector3, LVector4f
 from direct.interval.LerpInterval import LerpHprInterval
 import random
-from Config import rotate_time
+from config.Config import rotate_time
+from Functions import get_random_hpr, get_random_position
 from Color import Color
+from Object import Object, ObjectType
 
 
 def normalized(*args):
@@ -14,13 +16,12 @@ def normalized(*args):
     return my_vec
 
 
-class Square:
-
+class Cube(Object):
     cube = None
 
-    def __init__(self, scale=1, color=LVector4f(0.0, 0.0, 0.0, 0.0), renderer=None, rotate=False):
-        self.color = color
-        self.pos = LVector3(0, 0, 0)
+    def __init__(self, _renderer, _loader, _debugger, scale=1, _color=LVector4f(0.0, 0.0, 0.0, 0.0)):
+        Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.CUBE, _hpr=get_random_hpr())
+        self.color = _color
         self.square0 = self.make_square(-1*scale, -1*scale, -1*scale,
                                         1*scale, -1*scale, 1*scale)
         self.square1 = self.make_square(-1*scale, 1*scale, -1*scale,
@@ -44,29 +45,22 @@ class Square:
 
         self.intervals = []
 
-        if renderer:
-            self.render(renderer)
-            if rotate:
-                self.rotate()
+        if self.render:
+            self.render_object()
+            self.rotate()
 
-    def render(self, _render):
-        self.cube = _render.attachNewNode(self.node)
-        self.cube.setAttrib(CullFaceAttrib.make(CullFaceAttrib.MCullNone))
+    def generate(self):
+        self.rendered_object.setPos(get_random_position(y=3))
+        self.rendered_object.setHpr(self.hpr)
 
     def delete(self):
         for interval in self.intervals:
             interval.finish()
         self.intervals = []
-        self.cube.removeNode()
-
-    def set_pos(self, *args):
-        self.cube.setPos(LVector3(args[0], args[1], args[2]))
+        self.rendered_object.removeNode()
 
     def get_pos(self):
-        return self.cube.node
-
-    def set_hpr(self, _hpr):
-        self.cube.setHpr(_hpr)
+        return self.rendered_object.node
 
     def make_square(self, x1, y1, z1, x2, y2, z2):
         # https://github.com/panda3d/panda3d/blob/master/samples/procedural-cube/main.py
@@ -116,12 +110,12 @@ class Square:
     def rotate(self):
         multiplicities = [1, -1]
 
-        if self.cube:
-            cur_hpr = self.cube.getHpr()
+        if self.rendered_object:
+            cur_hpr = self.rendered_object.getHpr()
             new_hpr = (cur_hpr.x + (360 * random.choice(multiplicities)),
                        cur_hpr.y + (360 * random.choice(multiplicities)),
                        cur_hpr.z + (360 * random.choice(multiplicities)))
-            first_interval = LerpHprInterval(self.cube, rotate_time, new_hpr)
+            first_interval = LerpHprInterval(self.rendered_object, rotate_time, new_hpr)
 
             self.intervals.append(first_interval)
 

@@ -9,6 +9,9 @@ class Color(LVecBase4f):
     def get_color(self):
         return self
 
+    def __str__(self):
+        return str(self.x*255) + ", " + str(self.y*255) + ", " + str(self.z*255) + "," + str(self.w)
+
 
 class ColorGroup:
     def __init__(self, _name, *_colors):

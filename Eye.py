@@ -1,13 +1,11 @@
 from Part import Part, TYPES
-import random
 from direct.interval.LerpInterval import LerpHprInterval, LerpScaleInterval
-from panda3d.core import LVector3
 from direct.interval.IntervalGlobal import Sequence, Func, Wait
-from Config import *
 from Functions import *
+from Object import Object, ObjectType
 
 
-class Eye:
+class Eye(Object):
     parts = None
     sequences = []
     intervals = []
@@ -15,15 +13,11 @@ class Eye:
     open = False
 
     def __init__(self, _renderer, _loader, _debugger, _variant, _color, _pos, _skin_color):
-        self.render = _renderer
-        self.debugger = _debugger
-        self.loader = _loader
+        Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.EYE, _pos=_pos, _hpr=get_random_hpr())
         self.variant = _variant
         self.generate_eye()
         self.change_eye_color(_color)
         self.change_skin_color(_skin_color)
-        self.pos = _pos
-        self.hpr = get_random_hpr()
         self.put_in_specific_position()
         blink_interval = Func(self.blink)
         loop_blink_sequence = Sequence(blink_interval, Wait(1))

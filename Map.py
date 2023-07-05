@@ -7,7 +7,7 @@ class MapNode:
         if type(_color) == ColorGroup:
             self.color = _color
         else:
-            raise Exception("Incorrect type(_color): " + str(type(_color)))
+            raise Exception("Map.MapNode | Incorrect type(_color): " + str(type(_color)))
         self.min_x = _min_x
         self.max_x = _max_x
         self.min_z = _min_z
@@ -38,11 +38,12 @@ class Map:
         self.fuzz = 0
         self.weight = 0
         self.name = "NA"
+        self.debug = None
         for node in _nodes:
             if type(node) == MapNode:
                 self.nodes.append(node)
             else:
-                raise Exception("Attempted to create MapNode from " + str(type(node)))
+                raise Exception("Map | Attempted to create MapNode from " + str(type(node)))
         for k, v in kwargs.items():
             if k == "fuzz":
                 self.fuzz = v
@@ -50,6 +51,11 @@ class Map:
                 self.weight = v
             elif k == "name":
                 self.name = v
+            elif k == "debug":
+                self.debug = v
+
+    def add_debug(self, _debug):
+        self.debug = _debug
 
     def __str__(self):
         return self.name
@@ -62,6 +68,10 @@ class Map:
         if len(viable) > 0:
             return random.choice(viable).color.get_color()
         else:
+            if self.debug:
+                self.debug.debug("No viable node for pos " + str(pos))
+            else:
+                raise Exception("No viable node for pos " + str(pos))
             return Color(0, 0, 0, 0)
 
     def random_color(self):
