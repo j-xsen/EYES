@@ -1,9 +1,6 @@
 import os
 from enum import Enum
 
-from direct.interval.IntervalGlobal import Sequence
-
-from direct.interval.FunctionInterval import Func
 from direct.showbase.ShowBase import ShowBase
 
 from direct.directnotify.DirectNotify import DirectNotify
@@ -11,11 +8,9 @@ from direct.task import Task
 from panda3d.core import loadPrcFile
 import sys
 import random
-from config.Config import rotate_time, maps
-from GifMaker import GifMaker
-from World import World
-
-number_eye_variants = 4
+from config.Config import rotate_time, maps, gifs_to_make
+from src.utility.GifMaker import GifMaker
+from src.utility.World import World
 
 loadPrcFile("config/Config.prc")
 
@@ -61,9 +56,8 @@ class MyApp(ShowBase):
             self.render_gif()
         elif self.stage == Stages.RENDERED_GIF:
             self.stage = Stages.GREEN
-            self.number_rendered += 1
 
-        if self.number_rendered > 3:
+        if self.number_rendered >= gifs_to_make:
             return Task.done
 
         return Task.cont
@@ -74,13 +68,16 @@ class MyApp(ShowBase):
     def render_gif(self):
         self.stage = Stages.RENDERING_GIF
         self.jxndbg.debug("run | Rendering gif...")
-        new_gif = GifMaker("screenshots/", str(self.chosen_map) + " "
-                           + str(self.number_rendered)).create_gif()
+        new_gif = GifMaker("screenshots/", f"{str(self.number_rendered)} {str(self.chosen_map)} "
+                                           f"{self.world.squares.num_objects()} "
+                                           f"{self.world.eyes.num_objects()}", f"{str(self.number_rendered)} "
+                                                                               f"{str(self.chosen_map)}").create_gif()
         self.jxndbg.debug("run | Finished rendering gif")
+        self.number_rendered += 1
         self.stage = Stages.RENDERED_GIF
         return new_gif
 
-    def finished_making_move(self):
+    def finished_making_movie(self):
         self.stage = Stages.MADE_MOVIE
         self.jxndbg.debug("run | Finished movie")
         self.stage = Stages.MADE_MOVIE
@@ -90,7 +87,8 @@ class MyApp(ShowBase):
         self.jxndbg.debug("run | Making movie...")
         if not os.path.exists("screenshots/"):
             os.makedirs("screenshots/")
-        new_task = await self.movie(namePrefix="screenshots/", duration=rotate_time, fps=5)
+        new_task = await self.movie(namePrefix=f"screenshots/{str(self.number_rendered)} {str(self.chosen_map)}",
+                                    duration=rotate_time, fps=5)
         self.stage = Stages.MADE_MOVIE
         return new_task
 

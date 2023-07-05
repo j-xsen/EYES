@@ -1,8 +1,8 @@
-from Part import Part, TYPES
+from src.objects.Part import Part, TYPES
 from direct.interval.LerpInterval import LerpHprInterval, LerpScaleInterval
 from direct.interval.IntervalGlobal import Sequence, Func, Wait
-from Functions import *
-from Object import Object, ObjectType
+from src.utility.Functions import *
+from src.objects.Object import Object, ObjectType
 
 
 class Eye(Object):
@@ -104,9 +104,9 @@ class Eye(Object):
         self.open = True
 
     def rotate(self):
-        rotate_table = [0, 1, 1, 1, 1, 1, 1, -1, -1]
+        rotate_table = [0, 1, 1, 1, 1, 1, 1, -1, -1, -1, 0, 0, -1, -1, 1, 1, -1]
         rotate_axis = LVector3(random.choice(rotate_table), random.choice(rotate_table), random.choice(rotate_table))
-        random_scale = (random.randint(1, 7) / 100) + 1
+        random_scale = (random.randint(1, 25) / 100) + 1
         for name, obj in self.parts.items():
             cur_hpr = obj.getHpr()
             new_hpr = LVector3(cur_hpr.x + 360 * rotate_axis.x,

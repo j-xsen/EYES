@@ -1,11 +1,11 @@
 import random
 
-from WorldObjectHolder import WorldObjectHolder
-from Object import ObjectType
-from Functions import get_random_position
-from Cube import Cube
-from Eye import Eye
-from Map import Map
+from src.objects.WorldObjectHolder import WorldObjectHolder
+from src.objects.Object import ObjectType
+from src.utility.Functions import get_random_position
+from src.objects.Cube import Cube
+from src.objects.Eye import Eye
+from src.utility.Map import Map
 from config.Config import color_groups
 
 

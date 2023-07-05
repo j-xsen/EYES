@@ -1,13 +1,13 @@
-from panda3d.core import GeomVertexFormat, GeomVertexData, CullFaceAttrib
+from panda3d.core import GeomVertexFormat, GeomVertexData
 from panda3d.core import Geom, GeomTriangles, GeomVertexWriter
 from panda3d.core import GeomNode
 from panda3d.core import LVector3, LVector4f
 from direct.interval.LerpInterval import LerpHprInterval
 import random
 from config.Config import rotate_time
-from Functions import get_random_hpr, get_random_position
-from Color import Color
-from Object import Object, ObjectType
+from src.utility.Functions import get_random_hpr, get_random_position
+from src.utility.Color import Color
+from src.objects.Object import Object, ObjectType
 
 
 def normalized(*args):

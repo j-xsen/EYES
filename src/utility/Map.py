@@ -1,4 +1,4 @@
-from Color import Color, ColorGroup
+from src.utility.Color import Color, ColorGroup
 import random
 
 
@@ -70,8 +70,6 @@ class Map:
         else:
             if self.debug:
                 self.debug.debug("No viable node for pos " + str(pos))
-            else:
-                raise Exception("No viable node for pos " + str(pos))
             return Color(0, 0, 0, 0)
 
     def random_color(self):

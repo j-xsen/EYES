@@ -1,6 +1,6 @@
 from panda3d.core import ConfigVariableInt
-from Color import ColorGroup
-from Map import Map, MapNode
+from src.utility.Color import ColorGroup
+from src.utility.Map import Map, MapNode
 
 
 min_pos_x = ConfigVariableInt('min-pos-x', -1000).getValue()
@@ -13,7 +13,8 @@ min_hpr_x = ConfigVariableInt('min-hpr-x', -100).getValue()
 max_hpr_x = ConfigVariableInt('max-hpr-x', 300).getValue()
 min_hpr_y = ConfigVariableInt('min-hpr-y', -25).getValue()
 max_hpr_y = ConfigVariableInt('max-hpr-y', 25).getValue()
-rotate_time = ConfigVariableInt('rotate-time', 5).getValue()
+rotate_time = ConfigVariableInt('rotate-time', 2).getValue()
+gifs_to_make = ConfigVariableInt('gifs-to-make', 50).getValue()
 
 color_groups = {
     "Blue": ColorGroup("Blue", (13, 152, 186), (13, 81, 118), (93, 53, 252), (47, 10, 196)),
@@ -32,7 +33,9 @@ color_groups = {
                              (73, 112, 184)),
     "Dark Green": ColorGroup("Dark Green", (7, 38, 16), (8, 18, 11), (3, 43, 23)),
     "Red": ColorGroup("Red", (245, 41, 22), (163, 45, 34)),
-    "Skin Color": ColorGroup("Skin Color", (141, 85, 36), (198, 134, 66), (224, 172, 105))
+    "Skin Color": ColorGroup("Skin Color", (141, 85, 36), (198, 134, 66), (224, 172, 105)),
+    "Orange": ColorGroup("Orange", (255, 191, 0), (255, 172, 28), (205, 127, 50), (233, 116, 81), (255, 127, 80),
+                         (210, 125, 45))
 }
 
 maps = [
@@ -70,7 +73,7 @@ maps = [
         MapNode(color_groups["Green"], -1, 1, -0.5, 0.5),
         fuzz=0.25, weight=60, name="Desert"
         ),
-    # Stormy
+    # # Stormy
     Map(MapNode(color_groups["Purple"], -1, 1, -0.4, 1),
         MapNode(color_groups["Purple"], -1, 1, -0.4, 1),
         MapNode(color_groups["Purple"], -1, 1, -0.4, 1),
@@ -84,7 +87,7 @@ maps = [
         MapNode(color_groups["Black"], -1, 1, 0.4, 1),
         fuzz=0.25, weight=60, name="Stormy"
         ),
-    # Mountain
+    # # Mountain
     Map(MapNode(color_groups["Gray"], -0.75, 0.75, -1, -0.75),
         MapNode(color_groups["Black"], -0.5, 0.5, -1, -0.75),
         MapNode(color_groups["Gray"], -0.65, 0.65, -0.75, -0.5),
@@ -107,6 +110,33 @@ maps = [
         MapNode(color_groups["White"], 0.5, 1, 0, 0.5),
         MapNode(color_groups["Purple"], -1, 1, -1, 0.25),
         fuzz=0.15, weight=60, name="Mountain"
+        ),
+    # WHITE OUT
+    Map(MapNode(color_groups["White"], -1, 1, -1, 1),
+        MapNode(color_groups["White"], -1, 1, -1, 1),
+        MapNode(color_groups["White"], -1, 1, -1, 1),
+        MapNode(color_groups["White"], -1, 1, -1, 1),
+        MapNode(color_groups["White"], -1, 1, -1, 1),
+        MapNode(color_groups["Black"], -1, 1, -1, 1),
+        fuzz=0.15, weight=60, name="WHITE OUT"
+        ),
+    # I Over did It
+    Map(MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Red"], -1, 1, -1, 1),
+        MapNode(color_groups["Blue"], -1, 1, -1, 1),
+        MapNode(color_groups["Yellow"], -1, 1, -1, 1),
+        MapNode(color_groups["Orange"], -1, 1, -1, 1),
+        fuzz=0.15, weight=60, name="I Over did It"
         ),
     # Love Heart
     Map(MapNode(color_groups["Red"], -0.05, 0.05, -0.6, -0.5),

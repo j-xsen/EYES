@@ -13,6 +13,9 @@ class WorldObjectHolder:
         else:
             raise Exception(f"WorldObjectHolder | Tried adding {str(type(_object.type))} to {self.object_type}")
 
+    def num_objects(self):
+        return len(self.objects)
+
     def destroy(self):
         for obj in self.objects:
             obj.delete()

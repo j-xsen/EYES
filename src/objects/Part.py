@@ -1,8 +1,7 @@
 from enum import Enum
-from PIL import Image, ImageChops
 from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import TransparencyAttrib
-from Color import ColorGroup, Color
+from src.utility.Color import ColorGroup, Color
 
 
 image_directory = "img/"
