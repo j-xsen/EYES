@@ -2,6 +2,7 @@ import glob
 from pathlib import Path
 
 from PIL import Image
+from config.Config import fps
 
 
 class GifMaker:
@@ -12,7 +13,7 @@ class GifMaker:
         self.output = output
 
     def create_gif(self):
-        self.frames = [] # naughty naughty
+        self.frames = []  # naughty naughty
         Path(str(self.src + "/")).mkdir(exist_ok=True)
         for image in glob.glob(self.src + f"/{self.srcprefix}*.png"):
             new_frame = Image.open(image)
@@ -22,5 +23,4 @@ class GifMaker:
 
         frame_one = self.frames[0]
         frame_one.save("render/" + self.output + ".gif", format="gif", append_images=self.frames, save_all=True,
-                       duration=1, loop=0,
-                       )
+                       duration=40, loop=0)

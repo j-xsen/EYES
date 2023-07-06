@@ -7,13 +7,11 @@ from src.objects.Object import Object, ObjectType
 
 class Eye(Object):
     parts = None
-    sequences = []
-    intervals = []
-    scale = 0.1
     open = False
 
-    def __init__(self, _renderer, _loader, _debugger, _variant, _color, _pos, _skin_color):
-        Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.EYE, _pos=_pos, _hpr=get_random_hpr())
+    def __init__(self, _renderer, _loader, _debugger, _variant, _color, _pos, _skin_color, _object_id):
+        Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.EYE, _pos=_pos, _hpr=get_random_hpr(),
+                        _object_id=_object_id)
         self.variant = _variant
         self.generate_eye()
         self.change_eye_color(_color)
@@ -31,12 +29,18 @@ class Eye(Object):
 
     def generate_eye(self):
         self.scale = random.randint(1, 25) / 100
-        base = Part(self.loader, self.debugger, self.variant, TYPES.BASE)
-        base_closed = Part(self.loader, self.debugger, self.variant, TYPES.BASE, _closed=True)
-        pupil_base = Part(self.loader, self.debugger, self.variant, TYPES.BASE, _pupil=True)
-        pupil_shade = Part(self.loader, self.debugger, self.variant, TYPES.SHADE, _pupil=True)
-        line = Part(self.loader, self.debugger, self.variant, TYPES.LINE)
-        line_closed = Part(self.loader, self.debugger, self.variant, TYPES.LINE, _closed=True)
+        base = Part(self.loader, self.debugger, self.variant, TYPES.BASE,
+                    _object_id=self.object_id)
+        base_closed = Part(self.loader, self.debugger, self.variant, TYPES.BASE, _closed=True,
+                           _object_id=self.object_id)
+        pupil_base = Part(self.loader, self.debugger, self.variant, TYPES.BASE, _pupil=True,
+                          _object_id=self.object_id)
+        pupil_shade = Part(self.loader, self.debugger, self.variant, TYPES.SHADE, _pupil=True,
+                           _object_id=self.object_id)
+        line = Part(self.loader, self.debugger, self.variant, TYPES.LINE,
+                    _object_id=self.object_id)
+        line_closed = Part(self.loader, self.debugger, self.variant, TYPES.LINE, _closed=True,
+                           _object_id=self.object_id)
         self.parts = {
             "base": base,
             "base_closed": base_closed,
@@ -48,23 +52,12 @@ class Eye(Object):
         self.open_eye()
 
     def delete(self):
-        self.render = None
-        self.debugger = None
-        self.loader = None
-        self.variant = None
-        self.scale = None
-
+        Object.delete(self)
         for part, value in self.parts.items():
             value.destroy()
             self.parts[part] = None
+        self.variant = None
         self.parts = None
-
-        for interval in range(0, len(self.intervals)):
-            self.intervals[interval] = None
-        for sequence in range(0, len(self.sequences)):
-            self.sequences[sequence] = None
-        self.intervals = None
-        self.sequences = None
 
     def change_eye_color(self, _color):
         self.parts["pupil_base"].tint_image(_color)
@@ -112,16 +105,20 @@ class Eye(Object):
             new_hpr = LVector3(cur_hpr.x + 360 * rotate_axis.x,
                                cur_hpr.y + 360 * rotate_axis.y,
                                cur_hpr.z + 360 * rotate_axis.z)
-            new_hpr_interval = LerpHprInterval(obj, rotate_time, new_hpr)
-            grow_scale_interval = LerpScaleInterval(obj, rotate_time, self.scale * random_scale)
-            shrink_scale_interval = LerpScaleInterval(obj, rotate_time, self.scale)
+            new_hpr_interval = LerpHprInterval(obj, rotate_time, new_hpr,
+                                               name=f"Eye HPR Interval {str(obj)}")
+            grow_scale_interval = LerpScaleInterval(obj, rotate_time, self.scale * random_scale,
+                                                    name=f"Eye Grow Scale Interval {str(obj)}")
+            shrink_scale_interval = LerpScaleInterval(obj, rotate_time, self.scale,
+                                                      name=f"Eye Shrink Scale Interval {str(obj)}")
+            scale_sequence = Sequence(grow_scale_interval, shrink_scale_interval,
+                                      name=f"Eye Sequence {str(obj)}")
+            new_hpr_interval.loop()
+            scale_sequence.loop()
             self.intervals.append(new_hpr_interval)
             self.intervals.append(grow_scale_interval)
             self.intervals.append(shrink_scale_interval)
-            scale_sequence = Sequence(grow_scale_interval, shrink_scale_interval)
             self.sequences.append(scale_sequence)
-            new_hpr_interval.loop()
-            scale_sequence.loop()
 
     def blink(self):
         if not self.render:

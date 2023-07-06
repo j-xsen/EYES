@@ -19,8 +19,9 @@ def normalized(*args):
 class Cube(Object):
     cube = None
 
-    def __init__(self, _renderer, _loader, _debugger, scale=1, _color=LVector4f(0.0, 0.0, 0.0, 0.0)):
-        Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.CUBE, _hpr=get_random_hpr())
+    def __init__(self, _renderer, _loader, _debugger, scale=1, _color=LVector4f(0.0, 0.0, 0.0, 0.0), _object_id=0):
+        Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.CUBE, _hpr=get_random_hpr(),
+                        _object_id=_object_id)
         self.color = _color
         self.square0 = self.make_square(-1*scale, -1*scale, -1*scale,
                                         1*scale, -1*scale, 1*scale)
@@ -43,21 +44,18 @@ class Cube(Object):
         self.node.addGeom(self.square4)
         self.node.addGeom(self.square5)
 
-        self.intervals = []
-
         if self.render:
             self.render_object()
             self.rotate()
 
+    def delete(self):
+        Object.delete(self)
+        self.node.removeAllGeoms()
+        self.node = None
+
     def generate(self):
         self.rendered_object.setPos(get_random_position(y=3))
         self.rendered_object.setHpr(self.hpr)
-
-    def delete(self):
-        for interval in self.intervals:
-            interval.finish()
-        self.intervals = []
-        self.rendered_object.removeNode()
 
     def get_pos(self):
         return self.rendered_object.node

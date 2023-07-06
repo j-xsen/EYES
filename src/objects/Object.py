@@ -9,9 +9,11 @@ class ObjectType(Enum):
 
 
 class Object:
-    id = 0
+    intervals = []
+    sequences = []
 
-    def __init__(self, _renderer, _loader, _debugger, _type, _pos=LVector3(0, 0, 0), _hpr=LVector3(0, 0, 0), _scale=1):
+    def __init__(self, _renderer, _loader, _debugger, _type, _pos=LVector3(0, 0, 0), _hpr=LVector3(0, 0, 0), _scale=1,
+                 _object_id=0):
         self.render = _renderer
         self.debugger = _debugger
         self.loader = _loader
@@ -19,7 +21,30 @@ class Object:
         self.pos = _pos
         self.hpr = _hpr
         self.scale = _scale
-        self.node = None
+        self.rendered_object = None
+        self.object_id = _object_id
+
+    def __str__(self):
+        if self.type == ObjectType.EYE:
+            return "Eye"
+        elif self.type == ObjectType.CUBE:
+            return "Cube"
+
+    def give_id(self, _id):
+        self.object_id = _id
+
+    def delete(self):
+        self.intervals = None
+        self.sequences = None
+        self.render = None
+        self.debugger = None
+        self.loader = None
+        self.type = None
+        self.pos = None
+        self.hpr = None
+        self.scale = None
+        if self.rendered_object:
+            self.rendered_object.clear()
         self.rendered_object = None
 
     def render_object(self):

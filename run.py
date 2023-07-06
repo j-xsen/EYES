@@ -2,17 +2,13 @@ import os
 from enum import Enum
 
 from direct.showbase.ShowBase import ShowBase
-
 from direct.directnotify.DirectNotify import DirectNotify
 from direct.task import Task
-from panda3d.core import loadPrcFile
 import sys
 import random
-from config.Config import rotate_time, maps, gifs_to_make
+from config.Config import rotate_time, maps, gifs_to_make, fps
 from src.utility.GifMaker import GifMaker
 from src.utility.World import World
-
-loadPrcFile("config/Config.prc")
 
 
 class Stages(Enum):
@@ -23,6 +19,8 @@ class Stages(Enum):
     MADE_MOVIE = 4,
     RENDERING_GIF = 5,
     RENDERED_GIF = 6,
+    CLEANING = 7,
+    CLEANED = 8
 
 
 class MyApp(ShowBase):
@@ -48,6 +46,7 @@ class MyApp(ShowBase):
         self.taskMgr.add(self.generate())
 
     async def create_task(self, task):
+        self.jxndbg.debug(f"run | self.stage: {str(self.stage)}")
         if self.stage == Stages.GREEN:
             await self.generate()
         elif self.stage == Stages.GENERATED:
@@ -55,6 +54,8 @@ class MyApp(ShowBase):
         elif self.stage == Stages.MADE_MOVIE:
             self.render_gif()
         elif self.stage == Stages.RENDERED_GIF:
+            await self.clear()
+        elif self.stage == Stages.CLEANED:
             self.stage = Stages.GREEN
 
         if self.number_rendered >= gifs_to_make:
@@ -63,13 +64,14 @@ class MyApp(ShowBase):
         return Task.cont
 
     def batch_create(self):
+        self.jxndbg.debug(f"run | Batch creating {str(gifs_to_make)} at {str(rotate_time)}s ({str(fps)}fps)")
         self.taskMgr.add(self.create_task)
 
     def render_gif(self):
         self.stage = Stages.RENDERING_GIF
         self.jxndbg.debug("run | Rendering gif...")
         new_gif = GifMaker("screenshots/", f"{str(self.number_rendered)} {str(self.chosen_map)} "
-                                           f"{self.world.squares.num_objects()} "
+                                           f"{self.world.cubes.num_objects()} "
                                            f"{self.world.eyes.num_objects()}", f"{str(self.number_rendered)} "
                                                                                f"{str(self.chosen_map)}").create_gif()
         self.jxndbg.debug("run | Finished rendering gif")
@@ -85,19 +87,26 @@ class MyApp(ShowBase):
     async def make_movie(self):
         self.stage = Stages.MAKING_MOVIE
         self.jxndbg.debug("run | Making movie...")
+
         if not os.path.exists("screenshots/"):
             os.makedirs("screenshots/")
+
+        for f in os.listdir('screenshots/'):
+            os.remove(os.path.join('screenshots/', f))
+
         new_task = await self.movie(namePrefix=f"screenshots/{str(self.number_rendered)} {str(self.chosen_map)}",
-                                    duration=rotate_time, fps=5)
+                                    duration=rotate_time, fps=fps)
         self.stage = Stages.MADE_MOVIE
         return new_task
 
-    def clear(self):
+    async def clear(self):
+        self.stage = Stages.CLEANING
         self.jxndbg.debug("run | Destroying world!")
         if self.world:
-            self.world.destroy()
+            await self.world.destroy()
             self.world = None
         self.jxndbg.debug("run | World destroyed!")
+        self.stage = Stages.CLEANED
 
     async def generate(self):
         self.stage = Stages.GENERATING
@@ -115,7 +124,7 @@ class MyApp(ShowBase):
 
     async def regen(self):
         self.jxndbg.debug("run | Regenerating <3")
-        self.clear()
+        await self.clear()
         await self.generate()
         self.jxndbg.debug("run | Done regenerating.")
 

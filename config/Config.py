@@ -1,7 +1,8 @@
-from panda3d.core import ConfigVariableInt
+from panda3d.core import ConfigVariableInt, loadPrcFile
 from src.utility.Color import ColorGroup
 from src.utility.Map import Map, MapNode
 
+loadPrcFile("config/Config.prc")
 
 min_pos_x = ConfigVariableInt('min-pos-x', -1000).getValue()
 max_pos_x = ConfigVariableInt('max-pos-x', 1000).getValue()
@@ -14,7 +15,12 @@ max_hpr_x = ConfigVariableInt('max-hpr-x', 300).getValue()
 min_hpr_y = ConfigVariableInt('min-hpr-y', -25).getValue()
 max_hpr_y = ConfigVariableInt('max-hpr-y', 25).getValue()
 rotate_time = ConfigVariableInt('rotate-time', 2).getValue()
-gifs_to_make = ConfigVariableInt('gifs-to-make', 50).getValue()
+gifs_to_make = ConfigVariableInt('gifs-to-make', 2).getValue()
+min_cubes = ConfigVariableInt('min-cubes', 15).getValue()
+max_cubes = ConfigVariableInt('max-cubes', 15).getValue()
+min_eyes = ConfigVariableInt('min-eyes', 15).getValue()
+max_eyes = ConfigVariableInt('max-eyes', 15).getValue()
+fps = ConfigVariableInt('fps', 60).getValue()
 
 color_groups = {
     "Blue": ColorGroup("Blue", (13, 152, 186), (13, 81, 118), (93, 53, 252), (47, 10, 196)),
