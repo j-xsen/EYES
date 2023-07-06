@@ -4,8 +4,25 @@
 A project which ventures into creating digital art through the use of [Panda3D](https://awesomeopensource.com/project/elangosundar/awesome-README-templates).
 
 Generates GIFs from screenshots taken of a collage of EYES staring.
-## Installation
 
+![Example GIF](https://raw.githubusercontent.com/j-xsen/EYES/main/example.gif)
+
+## How to Run
+
+[Download the latest release](https://github.com/j-xsen/EYES/releases/tag/release) and launch `EYES/EYES.exe`
+
+Set variables in `config/Config.prc`
+
+## Controls
+`m` - Screenshot frames for 1 gif
+
+`r` - Render from screenshots
+
+`space` - Re-Generate
+
+`x` - Batch create
+
+## How to Modify
 Clone the project
 
 ```bash
@@ -80,14 +97,11 @@ Variables are set for the program in the `config/` folder
 
 
 
-## Run
+## Running from Source
 
 Run run.py
 
 ```bash
 python run.py
 ```
-## Example
-
-![Example GIF](https://raw.githubusercontent.com/j-xsen/EYES/main/example.gif)
 
