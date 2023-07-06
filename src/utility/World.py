@@ -6,7 +6,7 @@ from src.utility.Functions import get_random_position
 from src.objects.Cube import Cube
 from src.objects.Eye import Eye
 from src.utility.Map import Map
-from config.Config import color_groups, min_cubes, max_cubes, min_eyes, max_eyes
+from config.Config import color_groups, min_cubes, max_cubes, min_eyes, max_eyes, number_eye_variants
 
 
 class World:
@@ -56,7 +56,8 @@ class World:
                 new_pos = get_random_position()
                 new_eye_color = Map.pick_color(self.chosen_map, new_pos)
                 new_skin_color = color_groups["Skin Color"].get_color()
-                new_eye = Eye(self.render, self.loader, self.debugger, random.randint(1, 4), new_eye_color, new_pos,
+                new_eye = Eye(self.render, self.loader, self.debugger, random.randint(1, number_eye_variants),
+                              new_eye_color, new_pos,
                               new_skin_color, _object_id=self.eyes.num_objects())
                 self.eyes.add_object(new_eye)
             self.debugger.debug(f"World | [2/2] Generated {str(self.eyes.num_objects())} eyes")
