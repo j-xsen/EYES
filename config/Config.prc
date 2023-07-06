@@ -10,7 +10,7 @@ rotate-time 3
 fps 10
 gifs-to-make 50
 
-number-eye-variants 4
+num-eye-variants 4
 
 min-pos-x -1000
 max-pos-x 1000

@@ -21,7 +21,7 @@ max_cubes = ConfigVariableInt('max-cubes', 15).getValue()
 min_eyes = ConfigVariableInt('min-eyes', 15).getValue()
 max_eyes = ConfigVariableInt('max-eyes', 15).getValue()
 fps = ConfigVariableInt('fps', 60).getValue()
-number_eye_variants = ConfigVariableInt('fps', 60).getValue()
+number_eye_variants = ConfigVariableInt('num-eye-variants', 4).getValue()
 
 color_groups = {
     "Blue": ColorGroup("Blue", (13, 152, 186), (13, 81, 118), (93, 53, 252), (47, 10, 196)),
