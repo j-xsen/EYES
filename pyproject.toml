@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "EYES"
+version = "1.0.0"
+authors = [
+    {name = "Jaxsen Honeycutt"}
+]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3"
+]
+requires-python = ">= 3.11"
