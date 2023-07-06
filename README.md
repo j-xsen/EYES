@@ -89,5 +89,5 @@ python run.py
 ```
 ## Example
 
-![Example Screenshot](https://raw.githubusercontent.com/j-xsen/EYES/main/example.jpg)
+![Example GIF](https://raw.githubusercontent.com/j-xsen/EYES/main/example.gif)
 
