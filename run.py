@@ -10,6 +10,10 @@ from config.Config import rotate_time, maps, gifs_to_make, fps
 from src.utility.GifMaker import GifMaker
 from src.utility.World import World
 
+from panda3d.core import VirtualFileSystem, Multifile, Filename
+vfs = VirtualFileSystem.getGlobalPtr()
+vfs.mount(Filename("img.mf"), ".", VirtualFileSystem.MFReadOnly)
+
 
 class Stages(Enum):
     GREEN = 0,
