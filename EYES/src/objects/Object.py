@@ -1,6 +1,6 @@
 from enum import Enum
 
-from panda3d.core import LVector3, CullFaceAttrib
+from panda3d.core import LVector3
 
 
 class ObjectType(Enum):
@@ -21,7 +21,6 @@ class Object:
         self.pos = _pos
         self.hpr = _hpr
         self.scale = _scale
-        self.rendered_object = None
         self.object_id = _object_id
 
     def __str__(self):
@@ -43,13 +42,6 @@ class Object:
         self.pos = None
         self.hpr = None
         self.scale = None
-        if self.rendered_object:
-            self.rendered_object.clear()
-        self.rendered_object = None
-
-    def render_object(self):
-        self.rendered_object = self.render.attachNewNode(self.node)
-        self.rendered_object.setAttrib(CullFaceAttrib.make(CullFaceAttrib.MCullNone))
 
     def set_hpr(self, hpr):
         self.rendered_object.setHpr(hpr)

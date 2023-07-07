@@ -45,8 +45,8 @@ class World:
             for i in range(random.randint(min_cubes, max_cubes)):
                 new_pos = get_random_position(y=7)
                 new_cube = Cube(self.render, self.loader, self.debugger,
-                                  _color=Map.pick_color(self.chosen_map, new_pos),
-                                  scale=random.randint(150, 300) / 1000, _object_id=self.cubes.num_objects())
+                                _color=Map.pick_color(self.chosen_map, new_pos),
+                                scale=random.randint(150, 300) / 1000, _object_id=self.cubes.num_objects())
                 new_cube.rendered_object.setPos(new_pos)
                 new_cube.generate()
                 self.cubes.add_object(new_cube)

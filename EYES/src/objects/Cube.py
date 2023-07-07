@@ -1,4 +1,4 @@
-from panda3d.core import GeomVertexFormat, GeomVertexData
+from panda3d.core import GeomVertexFormat, GeomVertexData, CullFaceAttrib
 from panda3d.core import Geom, GeomTriangles, GeomVertexWriter
 from panda3d.core import GeomNode
 from panda3d.core import LVector3, LVector4f
@@ -18,6 +18,7 @@ def normalized(*args):
 
 class Cube(Object):
     cube = None
+    rendered_object = None
 
     def __init__(self, _renderer, _loader, _debugger, scale=1, _color=LVector4f(0.0, 0.0, 0.0, 0.0), _object_id=0):
         Object.__init__(self, _renderer, _loader, _debugger, _type=ObjectType.CUBE, _hpr=get_random_hpr(),
@@ -50,15 +51,18 @@ class Cube(Object):
 
     def delete(self):
         Object.delete(self)
+        if self.rendered_object:
+            self.rendered_object.clear()
         self.node.removeAllGeoms()
         self.node = None
+
+    def render_object(self):
+        self.rendered_object = self.render.attachNewNode(self.node)
+        self.rendered_object.setAttrib(CullFaceAttrib.make(CullFaceAttrib.MCullNone))
 
     def generate(self):
         self.rendered_object.setPos(get_random_position(y=3))
         self.rendered_object.setHpr(self.hpr)
-
-    def get_pos(self):
-        return self.rendered_object.node
 
     def make_square(self, x1, y1, z1, x2, y2, z2):
         # https://github.com/panda3d/panda3d/blob/master/samples/procedural-cube/main.py
